@@ -4,5 +4,6 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 DB=${DB:-jm_test}
 psql -q -c "drop database if exists $DB" -c "create database $DB"
-psql -q -v ON_ERROR_STOP=1 -d "$DB" -f supabase/tests/stub_supabase.sql -f supabase/migrations/*.sql >/dev/null
+args=(-f supabase/tests/stub_supabase.sql); for f in supabase/migrations/*.sql; do args+=(-f "$f"); done
+psql -q -v ON_ERROR_STOP=1 -d "$DB" "${args[@]}" >/dev/null 2>&1
 psql -q -v ON_ERROR_STOP=1 -d "$DB" -f supabase/tests/rls_test.sql | grep "PASSED"
