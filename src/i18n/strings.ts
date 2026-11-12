@@ -1,0 +1,421 @@
+import { PILOT_DAYS, PRIVACY_EMAIL, RESPONSE_DAYS } from '../config'
+
+const ar = {
+  brand: 'JobMate AI',
+  langToggle: 'EN',
+  langToggleLabel: 'Switch to English',
+  skip: 'تخطي إلى المحتوى',
+
+  nav: { how: 'إزاي بيشتغل', who: 'لمين', pricing: 'السعر', faq: 'أسئلة', apply: 'انضم للـ Pilot' },
+
+  hero: {
+    eyebrow: 'Pilot لـ 30 محترف HR في مصر',
+    title: 'مساعدك الذكي في رحلة البحث عن وظيفة',
+    titleAccent: 'مش موقع وظائف تاني',
+    sub: 'بدل ما تقضي ساعات تقلّب في إعلانات مش شبهك — إحنا بندوّرلك، بنقيّم كل وظيفة ونقولك ليه مناسبة، ونظبط الـ CV بتاعك لكل تقديم.',
+    cta: 'انضم للـ Pilot',
+    seats: (r: number, t: number) => `${r} مكان متبقي من ${t}`,
+    seatsFull: 'الأماكن اكتملت — سجّل في قائمة الانتظار',
+    ctaWaitlist: 'سجّل في قائمة الانتظار',
+    seatsLoading: 'جاري حساب الأماكن…',
+    note: 'بدون أي التزام دلوقتي. الدفع بعد القبول بس.',
+  },
+
+  how: {
+    title: 'إزاي بيشتغل',
+    sub: 'تلات خطوات، وفريقنا بيعمل الشغل التقيل.',
+    steps: [
+      { t: 'شاركنا ملفك', d: 'ارفع الـ CV وقولنا إنت عايز إيه: الدور، المكان، المرتب، وطريقة الشغل.' },
+      { t: 'بندوّرلك ونقيّم', d: 'بنلاقي الوظائف اللي تناسبك، ونقيّم كل واحدة ونشرحلك بوضوح ليه مناسبة — أو ليه لأ.' },
+      { t: 'CV مظبوط لكل وظيفة', d: 'بنعدّل الـ CV لكل تقديم، ونتابع معاك كل طلباتك في مكان واحد.' },
+    ],
+  },
+
+  who: {
+    title: 'الـ Pilot ده لمين؟',
+    items: [
+      'محترفين الموارد البشرية بخبرة من سنة لـ 15 سنة',
+      'في القاهرة أو الجيزة أو الإسكندرية',
+      'بتدوّر على خطوتك الجاية بجدّية — سواء شغّال دلوقتي أو لأ',
+    ],
+    roles: 'Generalist · Recruitment · Payroll · C&B · T&D · OD · HRBP · HR Manager',
+  },
+
+  byoj: {
+    title: 'لقيت وظيفة بنفسك؟ ابعتهالنا',
+    body: 'ابعتلنا أي لينك وظيفة شفته — على LinkedIn أو Wuzzuf أو أي مكان — وإحنا نقيّمهولك: مناسب ليك ولا لأ، وإيه نقط القوة والفجوات، وإزاي تقدّم عليه.',
+  },
+
+  pricing: {
+    title: 'السعر',
+    plan: 'Pilot Sprint',
+    duration: `${PILOT_DAYS} يوم`,
+    price: (p: string) => `${p} ج.م`,
+    includes: [
+      'ترشيح وظائف متقيّمة ومشروحة',
+      'تقييم أي وظيفة تبعتهالنا',
+      'CV مخصّص لكل تقديم',
+      'متابعة كل طلباتك',
+    ],
+    note: 'مش هتدفع حاجة دلوقتي. هنكلّمك الأول بعد مراجعة طلبك.',
+  },
+
+  privacy: {
+    title: 'وعدنا بخصوص خصوصيتك',
+    items: [
+      { t: 'بنجمع إيه', d: 'اسمك، وسيلة التواصل، الـ CV، وتفضيلات الشغل. مش بنطلب رقم قومي، ولا تاريخ ميلاد، ولا نوع، ولا ديانة، ولا حالة اجتماعية، ولا صورة.' },
+      { t: 'ليه', d: 'عشان نلاقيلك وظائف مناسبة ونظبط الـ CV بتاعك. مش بنبيع بياناتك ومش بنشاركها مع أصحاب الشغل من غير إذنك.' },
+      { t: 'إزاي تمسحها', d: 'في أي وقت من صفحة "امسح بياناتي" — بنمسح بياناتك والـ CV نهائيًا.' },
+    ],
+    link: 'امسح بياناتي',
+    policy: 'سياسة الخصوصية كاملة',
+  },
+
+  faq: {
+    title: 'أسئلة بتتسأل كتير',
+    items: [
+      { q: 'يعني إيه "Pilot"؟', a: `نسخة تجريبية محدودة لـ 30 شخص بس. فريقنا بيعمل الترشيح والتقييم يدويًا عشان نتعلّم إيه اللي فعلًا بيساعدك، قبل ما نبني المنتج الكامل.` },
+      { q: 'هل ده موقع وظائف؟', a: 'لأ. إحنا مش بننشر إعلانات. إحنا بنشتغل لحسابك: بندوّر، بنقيّم، وبنجهّزك لكل تقديم.' },
+      { q: 'هل بتستخدموا ذكاء اصطناعي على بياناتي دلوقتي؟', a: 'لأ. في المرحلة دي كل حاجة بتتعمل بإيد فريقنا. لو ده اتغيّر هنقولك ونطلب موافقتك الأول.' },
+      { q: 'إمتى هيتردّ عليا؟', a: `خلال ${RESPONSE_DAYS} أيام عمل على الأكتر، بالإيميل.` },
+      { q: 'لازم أدفع عشان أقدّم؟', a: 'لأ. التقديم مجاني. لو اتقبلت هنعرض عليك تفاصيل الـ Sprint وإنت تقرر.' },
+      { q: 'لو الأماكن خلصت؟', a: 'تقدر تسجّل في قائمة الانتظار بنفس الفورم، وهنكلّمك أول ما يفضى مكان أو تبدأ دفعة جديدة.' },
+    ],
+  },
+
+  footer: {
+    tagline: 'مساعدك الذكي في رحلة البحث عن وظيفة.',
+    privacy: 'سياسة الخصوصية',
+    terms: 'الشروط والأحكام',
+    delete: 'امسح بياناتي',
+    contact: `للخصوصية: ${PRIVACY_EMAIL}`,
+    rights: '© 2026 JobMate AI',
+  },
+
+  consent: {
+    step: 'الخطوة 1 من 2 · الموافقات',
+    title: 'قبل ما نبدأ — موافقتك',
+    sub: 'كل موافقة لوحدها. الأساسية لازمة عشان نقدر نقدّملك الخدمة، والباقي اختياري تمامًا.',
+    required: 'مطلوب',
+    optional: 'اختياري',
+    groupRequired: 'موافقات أساسية',
+    groupOptional: 'موافقات اختيارية',
+    continue: 'كمّل للفورم',
+    missing: 'محتاجين الموافقات الأساسية التلاتة عشان نكمّل.',
+    version: (v: string) => `نسخة نص الموافقة: ${v}`,
+    readPolicy: 'اقرأ سياسة الخصوصية',
+    back: 'رجوع',
+  },
+
+  form: {
+    step: (n: number, total: number) => `الخطوة ${n} من ${total}`,
+    stepNames: ['بياناتك', 'شغلك الحالي', 'الوظيفة اللي بتدوّر عليها', 'الـ CV', 'آخر حاجة'],
+    waitlistBanner: 'الـ 30 مكان اكتملوا — طلبك هيتسجّل في قائمة الانتظار وهنكلّمك أول ما يفضى مكان.',
+    next: 'التالي',
+    back: 'رجوع',
+    submit: 'ابعت الطلب',
+    submitWaitlist: 'سجّلني في قائمة الانتظار',
+    submitting: 'جاري الإرسال…',
+    uploading: 'جاري رفع الـ CV…',
+    optional: '(اختياري)',
+    selectPlaceholder: 'اختار…',
+    multiHint: 'تقدر تختار أكتر من واحد',
+    noConsent: 'لازم توافق على الموافقات الأساسية الأول.',
+    goConsent: 'روح لصفحة الموافقات',
+
+    fullName: 'الاسم بالكامل',
+    email: 'الإيميل',
+    mobile: 'رقم الموبايل',
+    mobileHint: 'رقم مصري، مثلًا 01012345678',
+    jobTitle: 'المسمّى الوظيفي الحالي',
+    jobTitleHint: 'لو مش شغّال دلوقتي، اكتب آخر مسمّى',
+    years: 'سنين الخبرة',
+    industry: 'المجال الحالي',
+    industryHint: 'مثلًا: FMCG، بنوك، اتصالات، تصنيع…',
+    roles: 'الأدوار اللي بتستهدفها',
+    locations: 'أماكن الشغل المفضّلة',
+    locationOther: 'اكتب المكان',
+    commute: 'أقصى وقت مواصلات (رايح)',
+    workMode: 'طريقة الشغل',
+    salary: 'أقل مرتب صافي متوقّع (شهريًا)',
+    cv: 'الـ CV',
+    cvHint: 'PDF أو DOCX، أقصى حجم 5 ميجا',
+    cvChoose: 'اختار ملف',
+    cvChange: 'غيّر الملف',
+    cvWarnTitle: 'تنبيه مهم',
+    cvWarn: 'متتعملش رفع للبطاقة الشخصية (الرقم القومي) أو صورة منها. وشيل من الـ CV الصورة الشخصية، والرقم القومي، والحالة الاجتماعية لو موجودين.',
+    linkedin: 'لينك LinkedIn',
+    appsLastMonth: 'قدّمت على كام وظيفة الشهر اللي فات؟',
+    wtp: (p: string) => `هل تدفع ${p} ج.م لـ Sprint مدته ${PILOT_DAYS} يوم؟`,
+    fairPrice: 'إيه السعر اللي تشوفه عادل؟ (ج.م)',
+    heard: 'عرفت عننا منين؟',
+    heardOther: 'منين؟',
+    website: 'الموقع',
+  },
+
+  errors: {
+    required: 'الخانة دي مطلوبة',
+    name: 'اكتب اسمك بالكامل (حرفين على الأقل)',
+    email: 'الإيميل مش مظبوط',
+    mobile: 'اكتب رقم موبايل مصري صحيح (01xxxxxxxxx)',
+    years: 'اكتب رقم من 0 لـ 50',
+    pickOne: 'اختار حاجة واحدة على الأقل',
+    cvType: 'الملف لازم يكون PDF أو DOCX',
+    cvSize: 'الملف أكبر من 5 ميجا',
+    cvRequired: 'ارفع الـ CV',
+    linkedin: 'اللينك لازم يكون من linkedin.com',
+    price: 'اكتب رقم صحيح',
+    duplicate: 'الإيميل ده اتسجّل قبل كده. لو محتاج تعدّل حاجة كلّمنا.',
+    generic: 'حصلت مشكلة. جرّب تاني بعد شوية.',
+    notConfigured: 'الموقع لسه مش متوصّل بقاعدة البيانات (إعدادات Supabase ناقصة).',
+    fixAbove: 'راجع الخانات اللي فيها مشكلة.',
+  },
+
+  thanks: {
+    title: 'وصلنا طلبك، شكرًا!',
+    titleWaitlist: 'إنت في قائمة الانتظار',
+    sub: `هنراجع ملفك ونردّ عليك بالإيميل خلال ${RESPONSE_DAYS} أيام عمل.`,
+    subWaitlist: 'الـ 30 مكان اكتملوا، بس طلبك محفوظ. هنكلّمك أول ما يفضى مكان أو تبدأ دفعة جديدة.',
+    nextTitle: 'إيه اللي جاي؟',
+    next: [
+      'فريقنا هيراجع الـ CV وتفضيلاتك.',
+      'هنبعتلك إيميل بالقرار وتفاصيل الـ Sprint لو اتقبلت.',
+      'لو اتقبلت، هنبدأ نبعتلك وظائف متقيّمة خلال أول أسبوع.',
+    ],
+    tip: 'في الوقت ده، لو شفت وظيفة عاجباك احتفظ باللينك — تقدر تبعتهولنا نقيّمه أول ما نبدأ.',
+    delete: 'غيّرت رأيك؟ اطلب مسح بياناتك',
+    home: 'الرجوع للرئيسية',
+  },
+
+  del: {
+    title: 'امسح بياناتي',
+    sub: 'اكتب الإيميل اللي سجّلت بيه، وهنمسح كل بياناتك والـ CV نهائيًا.',
+    email: 'الإيميل',
+    reason: 'السبب',
+    reasonHint: 'اختياري — بيساعدنا نتحسّن',
+    submit: 'اطلب المسح',
+    sending: 'جاري الإرسال…',
+    doneTitle: 'وصلنا طلبك',
+    done: 'هنمسح بياناتك خلال 7 أيام، وهنبعتلك تأكيد على نفس الإيميل. لو الإيميل مش مسجّل عندنا مش هيحصل حاجة.',
+    note: 'للأمان، ممكن نبعتلك إيميل نتأكد إنك صاحب الطلب قبل المسح.',
+  },
+
+  legal: {
+    draft: 'مسودة — النص النهائي هيتراجع قانونيًا قبل الإطلاق.',
+    back: 'الرجوع للرئيسية',
+  },
+
+  notFound: { title: 'الصفحة دي مش موجودة', home: 'الرجوع للرئيسية' },
+}
+
+export type Dict = typeof ar
+
+const en: Dict = {
+  brand: 'JobMate AI',
+  langToggle: 'عربي',
+  langToggleLabel: 'التحويل للعربية',
+  skip: 'Skip to content',
+
+  nav: { how: 'How it works', who: 'Who it’s for', pricing: 'Pricing', faq: 'FAQ', apply: 'Join the Pilot' },
+
+  hero: {
+    eyebrow: 'A pilot for 30 HR professionals in Egypt',
+    title: 'Your AI Career Agent',
+    titleAccent: 'not another job board',
+    sub: 'Stop spending hours scrolling ads that don’t fit you. We search for you, assess every job and explain why it fits, and tailor your CV for each application.',
+    cta: 'Join the Pilot',
+    seats: (r: number, t: number) => `${r} of ${t} seats left`,
+    seatsFull: 'All seats are taken — join the waitlist',
+    ctaWaitlist: 'Join the waitlist',
+    seatsLoading: 'Counting seats…',
+    note: 'No commitment now. You only pay if you’re accepted.',
+  },
+
+  how: {
+    title: 'How it works',
+    sub: 'Three steps — our team does the heavy lifting.',
+    steps: [
+      { t: 'Share your profile', d: 'Upload your CV and tell us what you want: role, location, salary and work mode.' },
+      { t: 'We find & assess jobs', d: 'We find jobs that fit you, assess each one and explain clearly why it fits — or why it doesn’t.' },
+      { t: 'A tailored CV for every job', d: 'We tailor your CV for each application and track all your applications in one place.' },
+    ],
+  },
+
+  who: {
+    title: 'Who is this pilot for?',
+    items: [
+      'HR professionals with 1–15 years of experience',
+      'Based in Cairo, Giza or Alexandria',
+      'Serious about your next move — employed or not',
+    ],
+    roles: 'Generalist · Recruitment · Payroll · C&B · T&D · OD · HRBP · HR Manager',
+  },
+
+  byoj: {
+    title: 'Found a job yourself? Send it to us',
+    body: 'Send us any job link you found — LinkedIn, Wuzzuf or anywhere — and we’ll assess it for you: is it a fit, what are your strengths and gaps, and how to apply.',
+  },
+
+  pricing: {
+    title: 'Pricing',
+    plan: 'Pilot Sprint',
+    duration: `${PILOT_DAYS} days`,
+    price: (p: string) => `EGP ${p}`,
+    includes: [
+      'Assessed, explained job shortlists',
+      'Assessment of any job you send us',
+      'A tailored CV for each application',
+      'Tracking of all your applications',
+    ],
+    note: 'You pay nothing now. We’ll talk to you first after reviewing your application.',
+  },
+
+  privacy: {
+    title: 'Our privacy promise',
+    items: [
+      { t: 'What we collect', d: 'Your name, contact details, CV and job preferences. We never ask for national ID, date of birth, gender, religion, marital status or a photo.' },
+      { t: 'Why', d: 'To find jobs that fit you and tailor your CV. We don’t sell your data or share it with employers without your permission.' },
+      { t: 'How to delete it', d: 'Anytime, from the “Delete my data” page — we permanently remove your data and CV.' },
+    ],
+    link: 'Delete my data',
+    policy: 'Full privacy policy',
+  },
+
+  faq: {
+    title: 'Frequently asked questions',
+    items: [
+      { q: 'What does “pilot” mean?', a: 'A limited trial for just 30 people. Our team does the matching and assessment by hand so we learn what really helps you before building the full product.' },
+      { q: 'Is this a job board?', a: 'No. We don’t post ads. We work on your behalf: we search, assess and prepare you for each application.' },
+      { q: 'Do you run AI on my data right now?', a: 'No. In this phase everything is done by our team. If that changes we’ll tell you and ask for your consent first.' },
+      { q: 'When will I hear back?', a: `Within ${RESPONSE_DAYS} business days, by email.` },
+      { q: 'Do I have to pay to apply?', a: 'No. Applying is free. If you’re accepted we’ll share the sprint details and you decide.' },
+      { q: 'What if the seats are gone?', a: 'You can join the waitlist with the same form, and we’ll reach out as soon as a seat opens or a new cohort starts.' },
+    ],
+  },
+
+  footer: {
+    tagline: 'Your AI Career Agent.',
+    privacy: 'Privacy Policy',
+    terms: 'Terms',
+    delete: 'Delete my data',
+    contact: `Privacy: ${PRIVACY_EMAIL}`,
+    rights: '© 2026 JobMate AI',
+  },
+
+  consent: {
+    step: 'Step 1 of 2 · Consent',
+    title: 'Before we start — your consent',
+    sub: 'Each consent is separate. The essential ones are needed to provide the service; the rest are entirely optional.',
+    required: 'Required',
+    optional: 'Optional',
+    groupRequired: 'Essential consents',
+    groupOptional: 'Optional consents',
+    continue: 'Continue to the form',
+    missing: 'We need the three essential consents to continue.',
+    version: (v: string) => `Consent text version: ${v}`,
+    readPolicy: 'Read the privacy policy',
+    back: 'Back',
+  },
+
+  form: {
+    step: (n: number, total: number) => `Step ${n} of ${total}`,
+    stepNames: ['About you', 'Current role', 'What you’re looking for', 'Your CV', 'Last questions'],
+    waitlistBanner: 'All 30 seats are taken — your application will join the waitlist and we’ll contact you when a seat opens.',
+    next: 'Next',
+    back: 'Back',
+    submit: 'Submit application',
+    submitWaitlist: 'Join the waitlist',
+    submitting: 'Submitting…',
+    uploading: 'Uploading your CV…',
+    optional: '(optional)',
+    selectPlaceholder: 'Choose…',
+    multiHint: 'You can pick more than one',
+    noConsent: 'Please give the essential consents first.',
+    goConsent: 'Go to consent page',
+
+    fullName: 'Full name',
+    email: 'Email',
+    mobile: 'Mobile number',
+    mobileHint: 'Egyptian number, e.g. 01012345678',
+    jobTitle: 'Current job title',
+    jobTitleHint: 'If you’re not working now, use your latest title',
+    years: 'Years of experience',
+    industry: 'Current industry',
+    industryHint: 'e.g. FMCG, banking, telecom, manufacturing…',
+    roles: 'Target roles',
+    locations: 'Preferred locations',
+    locationOther: 'Type the location',
+    commute: 'Maximum commute (one way)',
+    workMode: 'Work mode',
+    salary: 'Minimum expected net salary (monthly)',
+    cv: 'CV',
+    cvHint: 'PDF or DOCX, max 5 MB',
+    cvChoose: 'Choose file',
+    cvChange: 'Change file',
+    cvWarnTitle: 'Important',
+    cvWarn: 'Do NOT upload your National ID or a photo of it. Remove your photo, national ID number and marital status from your CV if present.',
+    linkedin: 'LinkedIn URL',
+    appsLastMonth: 'How many applications have you sent in the last month?',
+    wtp: (p: string) => `Would you pay EGP ${p} for a ${PILOT_DAYS}-day sprint?`,
+    fairPrice: 'What price would feel fair? (EGP)',
+    heard: 'How did you hear about us?',
+    heardOther: 'Where?',
+    website: 'Website',
+  },
+
+  errors: {
+    required: 'This field is required',
+    name: 'Please enter your full name (at least 2 characters)',
+    email: 'That email doesn’t look right',
+    mobile: 'Enter a valid Egyptian mobile number (01xxxxxxxxx)',
+    years: 'Enter a number from 0 to 50',
+    pickOne: 'Pick at least one',
+    cvType: 'The file must be a PDF or DOCX',
+    cvSize: 'The file is larger than 5 MB',
+    cvRequired: 'Please upload your CV',
+    linkedin: 'The link must be on linkedin.com',
+    price: 'Enter a valid number',
+    duplicate: 'This email has already applied. Contact us if you need to change something.',
+    generic: 'Something went wrong. Please try again shortly.',
+    notConfigured: 'This site isn’t connected to its database yet (Supabase settings missing).',
+    fixAbove: 'Please fix the highlighted fields.',
+  },
+
+  thanks: {
+    title: 'Application received — thank you!',
+    titleWaitlist: 'You’re on the waitlist',
+    sub: `We’ll review your profile and reply by email within ${RESPONSE_DAYS} business days.`,
+    subWaitlist: 'All 30 seats are taken, but your application is saved. We’ll reach out when a seat opens or a new cohort starts.',
+    nextTitle: 'What happens next?',
+    next: [
+      'Our team reviews your CV and preferences.',
+      'We email you our decision, plus sprint details if you’re accepted.',
+      'If accepted, you’ll start receiving assessed jobs within the first week.',
+    ],
+    tip: 'Meanwhile, if you spot a job you like, keep the link — you can send it to us to assess once we start.',
+    delete: 'Changed your mind? Request data deletion',
+    home: 'Back to home',
+  },
+
+  del: {
+    title: 'Delete my data',
+    sub: 'Enter the email you applied with and we’ll permanently delete all your data and your CV.',
+    email: 'Email',
+    reason: 'Reason',
+    reasonHint: 'Optional — helps us improve',
+    submit: 'Request deletion',
+    sending: 'Sending…',
+    doneTitle: 'Request received',
+    done: 'We’ll delete your data within 7 days and send a confirmation to the same email. If that email isn’t registered with us, nothing happens.',
+    note: 'For your security, we may email you to confirm the request is yours before deleting.',
+  },
+
+  legal: {
+    draft: 'Draft — final wording will be legally reviewed before launch.',
+    back: 'Back to home',
+  },
+
+  notFound: { title: 'Page not found', home: 'Back to home' },
+}
+
+export const STRINGS = { ar, en }

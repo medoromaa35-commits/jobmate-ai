@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+  --color-ink: #0e1f24;
+  --color-muted: #52656b;
+  --color-line: #dfe7e6;
+  --color-paper: #f7f9f8;
+  --color-brand-50: #eef6f5;
+  --color-brand-100: #d6eae8;
+  --color-brand-600: #17605f;
+  --color-brand-700: #124d4d;
+  --color-brand-800: #0f3d3e;
+  --color-brand-900: #0a2b2c;
+  --color-accent: #f4b860;
+  --color-accent-600: #d9952f;
+  --color-danger: #b42318;
+  --color-danger-50: #fef3f2;
+  --color-warn-50: #fff8eb;
+  --color-warn-700: #93500c;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body {
+  @apply bg-paper text-ink font-sans antialiased;
+  line-height: 1.7;
+}
+:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; border-radius: 6px; }
+
+/* Latin text (emails, URLs, phone) stays LTR inside RTL pages */
+.ltr { direction: ltr; unicode-bidi: isolate; }
+input[type="email"], input[type="tel"], input[type="url"] { direction: ltr; }
+[dir="rtl"] input[type="email"], [dir="rtl"] input[type="tel"], [dir="rtl"] input[type="url"] { text-align: right; }
+
+@layer components {
+  .btn, .btn-primary, .btn-accent, .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold transition
+           disabled:opacity-60 disabled:cursor-not-allowed min-h-12;
+  }
+  .btn-primary { @apply bg-brand-800 text-white hover:bg-brand-700 active:bg-brand-900; }
+  .btn-accent { @apply bg-accent text-brand-900 hover:bg-accent-600; }
+  .btn-ghost { @apply bg-white text-brand-800 ring-1 ring-line hover:bg-brand-50; }
+  .card { @apply rounded-2xl bg-white ring-1 ring-line; }
+  .field-label { @apply block text-[15px] font-semibold text-ink mb-1.5; }
+  .field-hint { @apply text-sm text-muted mt-1; }
+  .field-error { @apply text-sm text-danger mt-1.5 font-medium; }
+  .input {
+    @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-base text-ink placeholder:text-muted/60
+           focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-100 min-h-12;
+  }
+  .input[aria-invalid="true"] { @apply border-danger ring-2 ring-danger-50; }
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2.5 text-[15px]
+           cursor-pointer select-none transition min-h-11 hover:border-brand-600;
+  }
+  .chip-on { @apply border-brand-700 bg-brand-50 text-brand-800 font-semibold; }
+  .section { @apply mx-auto max-w-5xl px-4 sm:px-6; }
+}
