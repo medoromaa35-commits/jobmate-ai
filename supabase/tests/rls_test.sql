@@ -14,6 +14,7 @@ $$;
 create or replace function pg_temp.consents(all_required boolean) returns jsonb language sql as $$
   select jsonb_build_array(
     jsonb_build_object('key','process_profile','granted',true,'version','v1','text','t','language','ar'),
+    jsonb_build_object('key','ai_processing','granted',true,'version','v1','text','t','language','ar'),
     jsonb_build_object('key','cross_border','granted',all_required,'version','v1','text','t','language','ar'),
     jsonb_build_object('key','contact_email','granted',true,'version','v1','text','t','language','ar'),
     jsonb_build_object('key','contact_whatsapp','granted',false,'version','v1','text','t','language','ar'),
@@ -91,6 +92,15 @@ do $$ begin
     raise exception 'FAIL forged status'; exception when insufficient_privilege then null; end;
 end $$;
 
+-- 8b. orders: public may insert a pending order, never read it or forge status/amount
+insert into public.orders (plan, price_shown, full_name, email, mobile) values ('pilot_sprint','[PRICE_TBD]','Sara','s@x.com','+201001234567');
+do $$ begin
+  begin perform 1 from public.orders; raise exception 'FAIL anon read orders'; exception when insufficient_privilege then null; end;
+  begin execute $q$insert into public.orders (plan, full_name, email, mobile, status) values ('pilot_sprint','S','s@x.com','+201001234567','paid')$q$;
+    raise exception 'FAIL forged paid order'; exception when insufficient_privilege then null; end;
+  begin perform public.chat_rate_check('x', 10, 100); raise exception 'FAIL anon chat_rate_check'; exception when insufficient_privilege then null; end;
+end $$;
+
 -- 9. page counter
 select public.track_page_view('/'); select public.track_page_view('/'); select public.track_page_view('/junk');
 reset role;
@@ -110,7 +120,7 @@ set role authenticated;
 select set_config('request.jwt.claims', '{"role":"authenticated","sub":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","email":"admin@jobmate.ai","app_metadata":{"role":"admin"}}', false);
 do $$ declare n int; rid uuid; begin
   if (select count(*) from public.applicants) <> 3 then raise exception 'FAIL admin applicants'; end if;
-  if (select count(*) from public.consents) <> 18 then raise exception 'FAIL admin consents'; end if;
+  if (select count(*) from public.consents) <> 21 then raise exception 'FAIL admin consents'; end if;
   if (select count(*) from storage.objects) <> 4 then raise exception 'FAIL admin cvs'; end if;
   if (select count from public.page_views where path='/') <> 2 then raise exception 'FAIL page views'; end if;
   if exists (select 1 from public.page_views where path='/junk') then raise exception 'FAIL junk path counted'; end if;
@@ -127,6 +137,15 @@ do $$ declare n int; rid uuid; begin
   if exists (select 1 from public.admin_notes) then raise exception 'FAIL notes remain'; end if;
   if (select email from public.deletion_requests where id=rid) is not null then raise exception 'FAIL email not redacted'; end if;
   if (select status from public.deletion_requests where id=rid) <> 'completed' then raise exception 'FAIL not completed'; end if;
+end $$;
+reset role;
+-- ===== service_role: chat rate limiter =====
+set role service_role;
+do $$ declare ok boolean; i int; begin
+  for i in 1..3 loop ok := public.chat_rate_check('ip1', 3, 1000); if not ok then raise exception 'FAIL rate %', i; end if; end loop;
+  if public.chat_rate_check('ip1', 3, 1000) then raise exception 'FAIL 4th should be limited'; end if;
+  if not public.chat_rate_check('ip2', 3, 1000) then raise exception 'FAIL other ip limited'; end if;
+  if public.chat_rate_check('ip3', 3, 4) then raise exception 'FAIL global cap'; end if;
 end $$;
 reset role;
 \echo ALL RLS TESTS PASSED

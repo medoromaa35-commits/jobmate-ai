@@ -6,6 +6,7 @@ import type { Lang } from './options'
 
 export type ConsentKey =
   | 'process_profile'
+  | 'ai_processing'
   | 'cross_border'
   | 'contact_email'
   | 'contact_whatsapp'
@@ -33,6 +34,18 @@ export const CONSENTS: ConsentItem[] = [
     },
   },
   {
+    key: 'ai_processing',
+    required: true,
+    title: {
+      ar: 'أوافق على استخدام أدوات الذكاء الاصطناعي في تحليل الـ CV وملفي لتقييم الوظائف وتجهيز CV مخصّص لكل وظيفة.',
+      en: 'Use AI tools to analyze my CV and profile to assess jobs and draft a tailored CV for each one.',
+    },
+    explain: {
+      ar: 'بنستخدم Claude من شركة Anthropic. فريقنا بيراجع النتايج والذكاء الاصطناعي مش بياخد قرار لوحده، وإنت بتوافق على أي CV قبل استخدامه. بياناتك مش بتُستخدم لتدريب النماذج.',
+      en: 'We use Claude by Anthropic. Our team reviews the results — AI never decides alone — and you approve any CV before it’s used. Your data isn’t used to train AI models.',
+    },
+  },
+  {
     key: 'cross_border',
     required: true,
     title: {
@@ -40,8 +53,8 @@ export const CONSENTS: ConsentItem[] = [
       en: 'My data may be stored and processed on servers outside Egypt.',
     },
     explain: {
-      ar: 'بنستخدم مزوّد سحابي عالمي (Supabase) وخوادمه مش في مصر. البيانات مشفّرة، والـ CV في مساحة خاصة مقفولة، ومحدش يوصله غير فريقنا.',
-      en: 'We use a global cloud provider (Supabase) whose servers are not in Egypt. Data is encrypted, your CV sits in a private locked bucket, and only our team can open it.',
+      ar: 'بنستخدم مزوّدين عالميين (Supabase للتخزين، وAnthropic للذكاء الاصطناعي) وخوادمهم مش في مصر. البيانات مشفّرة، والـ CV في مساحة خاصة مقفولة، ومحدش يوصله غير فريقنا.',
+      en: 'We use global providers (Supabase for storage, Anthropic for AI) whose servers are not in Egypt. Data is encrypted, your CV sits in a private locked bucket, and only our team can open it.',
     },
   },
   {

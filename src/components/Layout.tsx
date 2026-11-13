@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useI18n } from '../i18n/I18n'
 import { trackPageView } from '../lib/track'
+import ChatWidget from './ChatWidget'
 
 export function Logo({ light = false }: { light?: boolean }) {
   return (
@@ -42,7 +43,7 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
             <nav className="hidden md:flex items-center gap-1 text-[15px] text-muted me-2">
               <Link to={{ pathname: '/', hash: '#how' }} className="px-3 py-2 hover:text-ink">{t.nav.how}</Link>
               <Link to={{ pathname: '/', hash: '#who' }} className="px-3 py-2 hover:text-ink">{t.nav.who}</Link>
-              <Link to={{ pathname: '/', hash: '#pricing' }} className="px-3 py-2 hover:text-ink">{t.nav.pricing}</Link>
+              <Link to="/pricing" className="px-3 py-2 hover:text-ink">{t.nav.pricing}</Link>
               <Link to={{ pathname: '/', hash: '#faq' }} className="px-3 py-2 hover:text-ink">{t.nav.faq}</Link>
             </nav>
           )}
@@ -69,6 +70,7 @@ export function Footer() {
         <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm sm:justify-end sm:items-start">
           <NavLink to="/privacy" className="hover:text-white underline-offset-4 hover:underline">{t.footer.privacy}</NavLink>
           <NavLink to="/terms" className="hover:text-white underline-offset-4 hover:underline">{t.footer.terms}</NavLink>
+          <NavLink to="/pricing" className="hover:text-white underline-offset-4 hover:underline">{t.footer.pricing}</NavLink>
           <NavLink to="/delete-my-data" className="hover:text-white underline-offset-4 hover:underline">{t.footer.delete}</NavLink>
         </nav>
       </div>
@@ -96,6 +98,7 @@ export default function Layout({ minimal = false }: { minimal?: boolean }) {
         <Outlet />
       </main>
       <Footer />
+      <ChatWidget />
     </div>
   )
 }

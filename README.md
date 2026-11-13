@@ -58,3 +58,11 @@ Arabic (RTL) by default, with an EN toggle. Built with Vite, React, Tailwind and
 `supabase/tests/run.sh` (run as a Postgres superuser, e.g. `sudo -u postgres`) applies the migration to a local DB
 with a minimal Supabase stub and checks RLS and behaviour. It covers anon isolation, upload path rules, required consents,
 the seat→waitlist switch, duplicate emails, admin vs non-admin access and deletion cascade + redaction.
+
+## Phase 1: chatbot, pricing/checkout, AI consent
+- **AI consent:** a new required consent, `ai_processing`, was added. `CONSENT_VERSION` was bumped to `2026-11-13.v2`, and the server now requires 4 consents.
+- **Chatbot:** Supabase Edge Function `supabase/functions/chat`, using Claude `claude-opus-5-5` at low effort with refusal fallbacks enabled.
+  - It answers only from `knowledge.ts` and suggests actions (apply / pricing / checkout / privacy / delete data / contact).
+  - No transcripts are stored. Rate limits: 30 messages/hour per hashed IP and 2000 messages/day overall (`chat_rate_check`).
+  - Needs the secret `ANTHROPIC_API_KEY` (Supabase → Edge Functions → Secrets). After you change `knowledge.ts` or the price, redeploy the function.
+- **Pricing & checkout:** `/pricing` and `/checkout`. Until a payment provider is connected (`PAYMENT_PROVIDER` in `src/config.ts`), checkout saves an **order request** (`orders` table) and the team sends a payment link manually. Admin → Orders shows each request and tracks its status.

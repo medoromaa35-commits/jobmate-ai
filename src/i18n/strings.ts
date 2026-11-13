@@ -1,4 +1,4 @@
-import { PILOT_DAYS, PRIVACY_EMAIL, RESPONSE_DAYS } from '../config'
+import { PAYMENT_LINK_HOURS, PILOT_DAYS, PRIVACY_EMAIL, RESPONSE_DAYS } from '../config'
 
 const ar = {
   brand: 'JobMate AI',
@@ -58,13 +58,14 @@ const ar = {
       'متابعة كل طلباتك',
     ],
     note: 'مش هتدفع حاجة دلوقتي. هنكلّمك الأول بعد مراجعة طلبك.',
+    details: 'التفاصيل وطريقة الدفع',
   },
 
   privacy: {
     title: 'وعدنا بخصوص خصوصيتك',
     items: [
       { t: 'بنجمع إيه', d: 'اسمك، وسيلة التواصل، الـ CV، وتفضيلات الشغل. مش بنطلب رقم قومي، ولا تاريخ ميلاد، ولا نوع، ولا ديانة، ولا حالة اجتماعية، ولا صورة.' },
-      { t: 'ليه', d: 'عشان نلاقيلك وظائف مناسبة ونظبط الـ CV بتاعك. مش بنبيع بياناتك ومش بنشاركها مع أصحاب الشغل من غير إذنك.' },
+      { t: 'ليه', d: 'عشان نلاقيلك وظائف مناسبة ونظبط الـ CV بتاعك، بمساعدة أدوات ذكاء اصطناعي وبمراجعة فريقنا. مش بنبيع بياناتك ومش بنشاركها مع أصحاب الشغل من غير إذنك.' },
       { t: 'إزاي تمسحها', d: 'في أي وقت من صفحة "امسح بياناتي" — بنمسح بياناتك والـ CV نهائيًا.' },
     ],
     link: 'امسح بياناتي',
@@ -76,7 +77,7 @@ const ar = {
     items: [
       { q: 'يعني إيه "Pilot"؟', a: `نسخة تجريبية محدودة لـ 30 شخص بس. فريقنا بيعمل الترشيح والتقييم يدويًا عشان نتعلّم إيه اللي فعلًا بيساعدك، قبل ما نبني المنتج الكامل.` },
       { q: 'هل ده موقع وظائف؟', a: 'لأ. إحنا مش بننشر إعلانات. إحنا بنشتغل لحسابك: بندوّر، بنقيّم، وبنجهّزك لكل تقديم.' },
-      { q: 'هل بتستخدموا ذكاء اصطناعي على بياناتي دلوقتي؟', a: 'لأ. في المرحلة دي كل حاجة بتتعمل بإيد فريقنا. لو ده اتغيّر هنقولك ونطلب موافقتك الأول.' },
+      { q: 'هل بتستخدموا ذكاء اصطناعي على بياناتي؟', a: 'أيوه، بموافقتك. بنستخدم Claude من Anthropic عشان نقيّم الوظائف ونجهّز CV مخصّص، وفريقنا بيراجع كل حاجة وإنت بتوافق على الـ CV قبل استخدامه. بياناتك مش بتُستخدم لتدريب النماذج.' },
       { q: 'إمتى هيتردّ عليا؟', a: `خلال ${RESPONSE_DAYS} أيام عمل على الأكتر، بالإيميل.` },
       { q: 'لازم أدفع عشان أقدّم؟', a: 'لأ. التقديم مجاني. لو اتقبلت هنعرض عليك تفاصيل الـ Sprint وإنت تقرر.' },
       { q: 'لو الأماكن خلصت؟', a: 'تقدر تسجّل في قائمة الانتظار بنفس الفورم، وهنكلّمك أول ما يفضى مكان أو تبدأ دفعة جديدة.' },
@@ -88,6 +89,7 @@ const ar = {
     privacy: 'سياسة الخصوصية',
     terms: 'الشروط والأحكام',
     delete: 'امسح بياناتي',
+    pricing: 'الأسعار',
     contact: `للخصوصية: ${PRIVACY_EMAIL}`,
     rights: '© 2026 JobMate AI',
   },
@@ -101,7 +103,7 @@ const ar = {
     groupRequired: 'موافقات أساسية',
     groupOptional: 'موافقات اختيارية',
     continue: 'كمّل للفورم',
-    missing: 'محتاجين الموافقات الأساسية التلاتة عشان نكمّل.',
+    missing: 'محتاجين الموافقات الأساسية الأربعة عشان نكمّل.',
     version: (v: string) => `نسخة نص الموافقة: ${v}`,
     readPolicy: 'اقرأ سياسة الخصوصية',
     back: 'رجوع',
@@ -206,6 +208,66 @@ const ar = {
   },
 
   notFound: { title: 'الصفحة دي مش موجودة', home: 'الرجوع للرئيسية' },
+
+  pricePage: {
+    title: 'الأسعار والدفع',
+    sub: 'باقة واحدة واضحة للـ Pilot. مفيش رسوم مخفية.',
+    tbd: 'السعر النهائي هيتعلن قريب، وهنأكده معاك قبل أي دفع.',
+    cta: 'ادفع / احجز مكانك',
+    apply: 'لسه ما قدّمتش؟ قدّم الأول مجانًا',
+    howTitle: 'الدفع بيتم إزاي؟',
+    how: [
+      'قدّم على الـ Pilot مجانًا، وفريقنا يراجع طلبك.',
+      'لو اتقبلت، دوس "ادفع / احجز مكانك" واكتب بياناتك.',
+      `هنبعتلك لينك دفع آمن خلال ${PAYMENT_LINK_HOURS} ساعة (كارت، محفظة موبايل، أو فوري).`,
+      'الـ Sprint يبدأ أول ما الدفع يتأكد.',
+    ],
+    safe: 'مش بنطلب بيانات الكارت على موقعنا ولا في الشات أبدًا — الدفع بيتم على بوابة دفع معتمدة.',
+    faqTitle: 'أسئلة عن الدفع',
+    faq: [
+      { q: 'لازم أكون اتقبلت عشان أدفع؟', a: 'أيوه. الأفضل تقدّم الأول، وإحنا هنأكدلك القبول والسعر قبل أي دفع.' },
+      { q: 'هل فيه ضمان إني ألاقي شغل؟', a: 'لأ، مفيش ضمان توظيف. بنعمل أحسن ما عندنا عشان نزوّد فرصك.' },
+      { q: 'طرق الدفع إيه؟', a: 'كروت بنكية ومحافظ موبايل وفوري عن طريق بوابة دفع مصرية معتمدة.' },
+    ],
+  },
+
+  checkout: {
+    title: 'احجز مكانك في الـ Pilot Sprint',
+    sub: 'اكتب بياناتك وهنبعتلك لينك دفع آمن.',
+    plan: 'الباقة',
+    fullName: 'الاسم بالكامل',
+    email: 'الإيميل',
+    mobile: 'رقم الموبايل',
+    note: 'مش هنطلب بيانات الكارت هنا. هيوصلك لينك من بوابة دفع معتمدة.',
+    submit: 'ابعت طلب الدفع',
+    sending: 'جاري الإرسال…',
+    doneTitle: 'وصلنا طلبك!',
+    done: `هنبعتلك لينك الدفع الآمن على الإيميل والموبايل خلال ${PAYMENT_LINK_HOURS} ساعة. لو لسه ما قدّمتش على الـ Pilot، قدّم الأول عشان نراجع ملفك.`,
+    applyNow: 'قدّم على الـ Pilot',
+    home: 'الرجوع للرئيسية',
+  },
+
+  chat: {
+    open: 'اسأل مساعد JobMate',
+    title: 'مساعد JobMate',
+    subtitle: 'مساعد ذكي — بيرد على أسئلتك عن الخدمة',
+    welcome: 'أهلًا! أنا مساعد JobMate 👋 اسألني عن الخدمة، الأسعار، الخصوصية، أو إزاي تقدّم.',
+    placeholder: 'اكتب سؤالك…',
+    send: 'إرسال',
+    close: 'إغلاق',
+    thinking: 'بيكتب…',
+    disclaimer: 'مساعد بالذكاء الاصطناعي وممكن يغلط. ماتكتبش بيانات حساسة (رقم قومي، كارت…). المحادثات مش بتتسجّل عندنا.',
+    error: 'معلش، حصلت مشكلة. جرّب تاني بعد شوية.',
+    suggestions: ['الخدمة بتشتغل إزاي؟', 'السعر كام؟', 'بياناتي في أمان؟', 'إزاي أقدّم؟'],
+    actions: {
+      apply: 'قدّم على الـ Pilot',
+      pricing: 'شوف الأسعار',
+      checkout: 'ادفع / احجز مكانك',
+      privacy: 'سياسة الخصوصية',
+      delete_data: 'امسح بياناتي',
+      contact_human: 'كلّم الفريق',
+    },
+  },
 }
 
 export type Dict = typeof ar
@@ -268,13 +330,14 @@ const en: Dict = {
       'Tracking of all your applications',
     ],
     note: 'You pay nothing now. We’ll talk to you first after reviewing your application.',
+    details: 'Details & how to pay',
   },
 
   privacy: {
     title: 'Our privacy promise',
     items: [
       { t: 'What we collect', d: 'Your name, contact details, CV and job preferences. We never ask for national ID, date of birth, gender, religion, marital status or a photo.' },
-      { t: 'Why', d: 'To find jobs that fit you and tailor your CV. We don’t sell your data or share it with employers without your permission.' },
+      { t: 'Why', d: 'To find jobs that fit you and tailor your CV, with AI tools and our team’s review. We don’t sell your data or share it with employers without your permission.' },
       { t: 'How to delete it', d: 'Anytime, from the “Delete my data” page — we permanently remove your data and CV.' },
     ],
     link: 'Delete my data',
@@ -286,7 +349,7 @@ const en: Dict = {
     items: [
       { q: 'What does “pilot” mean?', a: 'A limited trial for just 30 people. Our team does the matching and assessment by hand so we learn what really helps you before building the full product.' },
       { q: 'Is this a job board?', a: 'No. We don’t post ads. We work on your behalf: we search, assess and prepare you for each application.' },
-      { q: 'Do you run AI on my data right now?', a: 'No. In this phase everything is done by our team. If that changes we’ll tell you and ask for your consent first.' },
+      { q: 'Do you use AI on my data?', a: 'Yes, with your consent. We use Claude by Anthropic to assess jobs and draft tailored CVs; our team reviews everything and you approve any CV before it’s used. Your data isn’t used to train AI models.' },
       { q: 'When will I hear back?', a: `Within ${RESPONSE_DAYS} business days, by email.` },
       { q: 'Do I have to pay to apply?', a: 'No. Applying is free. If you’re accepted we’ll share the sprint details and you decide.' },
       { q: 'What if the seats are gone?', a: 'You can join the waitlist with the same form, and we’ll reach out as soon as a seat opens or a new cohort starts.' },
@@ -298,6 +361,7 @@ const en: Dict = {
     privacy: 'Privacy Policy',
     terms: 'Terms',
     delete: 'Delete my data',
+    pricing: 'Pricing',
     contact: `Privacy: ${PRIVACY_EMAIL}`,
     rights: '© 2026 JobMate AI',
   },
@@ -311,7 +375,7 @@ const en: Dict = {
     groupRequired: 'Essential consents',
     groupOptional: 'Optional consents',
     continue: 'Continue to the form',
-    missing: 'We need the three essential consents to continue.',
+    missing: 'We need the four essential consents to continue.',
     version: (v: string) => `Consent text version: ${v}`,
     readPolicy: 'Read the privacy policy',
     back: 'Back',
@@ -416,6 +480,66 @@ const en: Dict = {
   },
 
   notFound: { title: 'Page not found', home: 'Back to home' },
+
+  pricePage: {
+    title: 'Pricing & payment',
+    sub: 'One clear plan for the pilot. No hidden fees.',
+    tbd: 'The final price will be announced soon, and we’ll confirm it with you before any payment.',
+    cta: 'Pay / reserve your seat',
+    apply: 'Haven’t applied yet? Apply first — it’s free',
+    howTitle: 'How does payment work?',
+    how: [
+      'Apply to the pilot for free; our team reviews your application.',
+      'If accepted, press “Pay / reserve your seat” and enter your details.',
+      `We send you a secure payment link within ${PAYMENT_LINK_HOURS} hours (card, mobile wallet or Fawry).`,
+      'Your sprint starts as soon as payment is confirmed.',
+    ],
+    safe: 'We never ask for card details on our site or in chat — payment happens on a licensed payment gateway.',
+    faqTitle: 'Payment questions',
+    faq: [
+      { q: 'Do I need to be accepted before paying?', a: 'Yes. Apply first; we’ll confirm acceptance and the price before any payment.' },
+      { q: 'Is a job guaranteed?', a: 'No, there’s no job guarantee. We do our best to improve your chances.' },
+      { q: 'Which payment methods?', a: 'Bank cards, mobile wallets and Fawry via a licensed Egyptian payment gateway.' },
+    ],
+  },
+
+  checkout: {
+    title: 'Reserve your Pilot Sprint seat',
+    sub: 'Enter your details and we’ll send you a secure payment link.',
+    plan: 'Plan',
+    fullName: 'Full name',
+    email: 'Email',
+    mobile: 'Mobile number',
+    note: 'We won’t ask for card details here. You’ll receive a link from a licensed payment gateway.',
+    submit: 'Send payment request',
+    sending: 'Sending…',
+    doneTitle: 'Request received!',
+    done: `We’ll send your secure payment link by email and mobile within ${PAYMENT_LINK_HOURS} hours. If you haven’t applied to the pilot yet, please apply first so we can review your profile.`,
+    applyNow: 'Apply to the pilot',
+    home: 'Back to home',
+  },
+
+  chat: {
+    open: 'Ask the JobMate assistant',
+    title: 'JobMate Assistant',
+    subtitle: 'AI assistant — answers questions about the service',
+    welcome: 'Hi! I’m the JobMate assistant 👋 Ask me about the service, pricing, privacy, or how to apply.',
+    placeholder: 'Type your question…',
+    send: 'Send',
+    close: 'Close',
+    thinking: 'Typing…',
+    disclaimer: 'AI assistant — it can make mistakes. Don’t share sensitive data (national ID, card…). Chats aren’t stored by us.',
+    error: 'Sorry, something went wrong. Please try again shortly.',
+    suggestions: ['How does it work?', 'How much is it?', 'Is my data safe?', 'How do I apply?'],
+    actions: {
+      apply: 'Apply to the pilot',
+      pricing: 'See pricing',
+      checkout: 'Pay / reserve',
+      privacy: 'Privacy policy',
+      delete_data: 'Delete my data',
+      contact_human: 'Contact the team',
+    },
+  },
 }
 
 export const STRINGS = { ar, en }

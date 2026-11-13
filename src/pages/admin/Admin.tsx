@@ -124,7 +124,7 @@ function Login() {
 // ─────────────────────────────── Dashboard ───────────────────────────────
 function Dashboard() {
   const { a } = useAdminT()
-  const [tab, setTab] = useState<'applicants' | 'deletions' | 'stats'>('applicants')
+  const [tab, setTab] = useState<'applicants' | 'orders' | 'deletions' | 'stats'>('applicants')
   const [rows, setRows] = useState<Applicant[] | null>(null)
   const [err, setErr] = useState<string | null>(null)
 
@@ -139,7 +139,7 @@ function Dashboard() {
   return (
     <>
       <div role="tablist" className="flex gap-1 overflow-x-auto border-b border-line">
-        {(['applicants', 'deletions', 'stats'] as const).map((k) => (
+        {(['applicants', 'orders', 'deletions', 'stats'] as const).map((k) => (
           <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)}
             className={`whitespace-nowrap px-4 py-2.5 text-sm font-semibold border-b-2 -mb-px ${tab === k ? 'border-brand-700 text-brand-800' : 'border-transparent text-muted hover:text-ink'}`}>
             {a.tabs[k]}
@@ -149,6 +149,7 @@ function Dashboard() {
       {err && <div className="mt-4"><Alert tone="danger">{err}</Alert></div>}
       <div className="mt-5">
         {tab === 'applicants' && <Applicants rows={rows} reload={load} setRows={setRows} />}
+        {tab === 'orders' && <Orders applicants={rows ?? []} />}
         {tab === 'deletions' && <Deletions reload={load} applicants={rows ?? []} />}
         {tab === 'stats' && <Stats rows={rows ?? []} />}
       </div>
@@ -603,6 +604,71 @@ function Stats({ rows }: { rows: Applicant[] }) {
           </tbody>
         </table>
       </section>
+    </div>
+  )
+}
+
+// ─────────────────────────────── Orders ───────────────────────────────
+type OrderRow = {
+  id: string; created_at: string; plan: string; price_shown: string | null; full_name: string; email: string
+  mobile: string; language: string; status: 'pending' | 'link_sent' | 'paid' | 'cancelled' | 'refunded'; admin_note: string | null
+}
+const ORDER_STATUSES = ['pending', 'link_sent', 'paid', 'cancelled', 'refunded'] as const
+
+function Orders({ applicants }: { applicants: Applicant[] }) {
+  const { a, lang } = useAdminT()
+  const [rows, setRows] = useState<OrderRow[] | null>(null)
+  const [err, setErr] = useState<string | null>(null)
+  const [notes, setNotes] = useState<Record<string, string>>({})
+
+  const load = useCallback(async () => {
+    const { data, error } = await supabase!.from('orders').select('*').order('created_at', { ascending: false })
+    if (error) setErr(error.message)
+    setRows((data as OrderRow[]) ?? [])
+  }, [])
+  useEffect(() => { void load() }, [load])
+
+  async function update(id: string, patch: Partial<OrderRow>) {
+    const { error } = await supabase!.from('orders').update(patch).eq('id', id)
+    if (error) { setErr(error.message); return }
+    void load()
+  }
+
+  const emails = new Set(applicants.map((x) => x.email.toLowerCase()))
+  if (!rows) return <p className="text-muted">{a.loading}</p>
+  return (
+    <div className="space-y-2">
+      {err && <Alert tone="danger">{err}</Alert>}
+      {!rows.length && <p className="text-muted">{a.orders.none}</p>}
+      {rows.map((o) => (
+        <div key={o.id} className="card p-4">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="font-semibold">{o.full_name}</p>
+              <p className="text-sm text-muted">
+                <a className="ltr underline" href={`mailto:${o.email}`}>{o.email}</a> · <a className="ltr underline" href={`tel:${o.mobile}`}>{o.mobile}</a>
+              </p>
+              <p className="mt-1 text-xs text-muted">
+                {fmtDate(o.created_at, lang)} · {a.orders.plan}: {o.plan} · {a.orders.price}: {o.price_shown ?? '—'} · {o.language.toUpperCase()}
+              </p>
+              <p className={`mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${emails.has(o.email.toLowerCase()) ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                {emails.has(o.email.toLowerCase()) ? a.orders.yes : a.orders.no}
+              </p>
+            </div>
+            <select aria-label={a.status} className="input !min-h-10 !w-auto !py-2 text-sm" value={o.status}
+              onChange={(e) => void update(o.id, { status: e.target.value as OrderRow['status'] })}>
+              {ORDER_STATUSES.map((s) => <option key={s} value={s}>{a.orders.statuses[s]}</option>)}
+            </select>
+          </div>
+          <div className="mt-3 flex gap-2">
+            <label htmlFor={`on-${o.id}`} className="sr-only">{a.orders.note}</label>
+            <input id={`on-${o.id}`} className="input !min-h-10 !py-2 text-sm" placeholder={a.orders.note} maxLength={2000}
+              value={notes[o.id] ?? o.admin_note ?? ''} onChange={(e) => setNotes((n) => ({ ...n, [o.id]: e.target.value }))} />
+            <button className="btn-ghost !min-h-10 !py-2 text-sm whitespace-nowrap"
+              onClick={() => void update(o.id, { admin_note: (notes[o.id] ?? o.admin_note ?? '').trim() || null })}>{a.orders.saveNote}</button>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }

@@ -7,6 +7,8 @@ import Consent from './pages/Consent'
 import Apply from './pages/Apply'
 import ThankYou from './pages/ThankYou'
 import DeleteData from './pages/DeleteData'
+import Pricing from './pages/Pricing'
+import Checkout from './pages/Checkout'
 import { NotFound, Privacy, Terms } from './pages/Legal'
 
 const Admin = lazy(() => import('./pages/admin/Admin'))
@@ -21,6 +23,8 @@ export default function App() {
             <Route path="privacy" element={<Privacy />} />
             <Route path="terms" element={<Terms />} />
             <Route path="delete-my-data" element={<DeleteData />} />
+            <Route path="pricing" element={<Pricing />} />
+            <Route path="checkout" element={<Checkout />} />
             <Route path="*" element={<NotFound />} />
           </Route>
           <Route element={<Layout minimal />}>

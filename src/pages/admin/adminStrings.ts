@@ -8,7 +8,7 @@ const en = {
   badLogin: 'Wrong email or password.',
   notAdmin: 'This account is not an admin. Ask the project owner to grant the admin role.',
   notConfigured: 'Supabase is not configured (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY).',
-  tabs: { applicants: 'Applicants', deletions: 'Deletion requests', stats: 'Stats' },
+  tabs: { applicants: 'Applicants', orders: 'Orders', deletions: 'Deletion requests', stats: 'Stats' },
   search: 'Search name, email, title…',
   allStatuses: 'All statuses',
   allRoles: 'All roles',
@@ -56,6 +56,11 @@ const en = {
     byStatus: 'By status', views: 'Page views (last 30 days)', path: 'Page', views7: 'Last 7 days', views30: 'Last 30 days',
     wtp: 'Willingness to pay',
   },
+  orders: {
+    none: 'No order requests yet.', plan: 'Plan', price: 'Price shown', applicant: 'Applicant match',
+    yes: 'Has applied', no: 'Not an applicant', note: 'Note', saveNote: 'Save note',
+    statuses: { pending: 'Pending', link_sent: 'Link sent', paid: 'Paid', cancelled: 'Cancelled', refunded: 'Refunded' },
+  },
   statuses: { new: 'New', accepted: 'Accepted', waitlist: 'Waitlist', rejected: 'Rejected', active: 'Active', done: 'Done' },
 }
 
@@ -71,7 +76,7 @@ const ar: AdminDict = {
   badLogin: 'الإيميل أو كلمة السر غلط.',
   notAdmin: 'الحساب ده مش أدمن. اطلب من صاحب المشروع يدّيك صلاحية admin.',
   notConfigured: 'إعدادات Supabase ناقصة (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY).',
-  tabs: { applicants: 'المتقدمين', deletions: 'طلبات المسح', stats: 'إحصائيات' },
+  tabs: { applicants: 'المتقدمين', orders: 'طلبات الدفع', deletions: 'طلبات المسح', stats: 'إحصائيات' },
   search: 'دوّر بالاسم أو الإيميل أو المسمّى…',
   allStatuses: 'كل الحالات',
   allRoles: 'كل الأدوار',
@@ -118,6 +123,11 @@ const ar: AdminDict = {
     seats: 'الأماكن', taken: 'محجوز', total: 'إجمالي الأماكن', save: 'حفظ',
     byStatus: 'حسب الحالة', views: 'زيارات الصفحات (آخر 30 يوم)', path: 'الصفحة', views7: 'آخر 7 أيام', views30: 'آخر 30 يوم',
     wtp: 'الاستعداد للدفع',
+  },
+  orders: {
+    none: 'مفيش طلبات دفع لسه.', plan: 'الباقة', price: 'السعر المعروض', applicant: 'مطابقة مع متقدم',
+    yes: 'قدّم على الـ Pilot', no: 'مش متقدم', note: 'ملاحظة', saveNote: 'حفظ الملاحظة',
+    statuses: { pending: 'جديد', link_sent: 'اتبعت اللينك', paid: 'اتدفع', cancelled: 'ملغي', refunded: 'مسترد' },
   },
   statuses: { new: 'جديد', accepted: 'مقبول', waitlist: 'انتظار', rejected: 'مرفوض', active: 'نشط', done: 'خلص' },
 }

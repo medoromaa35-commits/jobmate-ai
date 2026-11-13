@@ -121,6 +121,7 @@ export default function Landing() {
           </ul>
           <p className="mt-5 text-sm text-muted">{t.pricing.note}</p>
           <ApplyCta className="mt-6 w-full" />
+          <Link to="/pricing" className="mt-3 block text-center text-sm font-semibold text-brand-700 underline underline-offset-4">{t.pricing.details}</Link>
         </div>
       </section>
 
