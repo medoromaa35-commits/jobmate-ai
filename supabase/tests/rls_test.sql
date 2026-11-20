@@ -139,6 +139,37 @@ do $$ declare n int; rid uuid; begin
   if (select status from public.deletion_requests where id=rid) <> 'completed' then raise exception 'FAIL not completed'; end if;
 end $$;
 reset role;
+-- ===== phase 2: jobs / matches are admin-only =====
+set role authenticated;
+select set_config('request.jwt.claims', '{"role":"authenticated","sub":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","app_metadata":{}}', false);
+do $$ begin
+  begin insert into public.jobs (title, description) values ('HR Manager', repeat('x', 40)); raise exception 'FAIL non-admin job insert'; exception when insufficient_privilege then null; end;
+  if (select count(*) from public.matches) <> 0 then raise exception 'FAIL non-admin sees matches'; end if;
+end $$;
+reset role;
+set role anon;
+do $$ begin
+  begin perform 1 from public.jobs; raise exception 'FAIL anon jobs'; exception when insufficient_privilege then null; end;
+  begin perform 1 from public.cv_profiles; raise exception 'FAIL anon cv_profiles'; exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+set role authenticated;
+select set_config('request.jwt.claims', '{"role":"authenticated","sub":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","app_metadata":{"role":"admin"}}', false);
+do $$ declare j uuid; begin
+  insert into public.jobs (title, company, description, source_url) values ('HR Manager', 'ACME', repeat('Lead HR. ', 10), 'https://example.com/j/1') returning id into j;
+  update public.jobs set status = 'closed' where id = j;
+  if (select status from public.jobs where id = j) <> 'closed' then raise exception 'FAIL admin job update'; end if;
+  begin insert into public.matches (applicant_id, job_id) values ('33333333-3333-4333-8333-333333333333', j); raise exception 'FAIL admin direct match insert'; exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+-- service role (Edge Function) creates matches; deleting the applicant cascades
+insert into public.matches (applicant_id, job_id, score, verdict) select '33333333-3333-4333-8333-333333333333', id, 80, 'good' from public.jobs limit 1;
+insert into public.cv_profiles (applicant_id, cv_path, parsed) values ('33333333-3333-4333-8333-333333333333', 'x', '{}');
+delete from public.applicants where id = '33333333-3333-4333-8333-333333333333';
+do $$ begin
+  if exists (select 1 from public.matches) or exists (select 1 from public.cv_profiles) then raise exception 'FAIL cascade'; end if;
+end $$;
+
 -- ===== service_role: chat rate limiter =====
 set role service_role;
 do $$ declare ok boolean; i int; begin

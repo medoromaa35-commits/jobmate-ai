@@ -66,3 +66,12 @@ the seat→waitlist switch, duplicate emails, admin vs non-admin access and dele
   - No transcripts are stored. Rate limits: 30 messages/hour per hashed IP and 2000 messages/day overall (`chat_rate_check`).
   - Needs the secret `ANTHROPIC_API_KEY` (Supabase → Edge Functions → Secrets). After you change `knowledge.ts` or the price, redeploy the function.
 - **Pricing & checkout:** `/pricing` and `/checkout`. Until a payment provider is connected (`PAYMENT_PROVIDER` in `src/config.ts`), checkout saves an **order request** (`orders` table) and the team sends a payment link manually. Admin → Orders shows each request and tracks its status.
+
+## Phase 2 — jobs, AI matching, tailored CVs (admin)
+- **Admin → Jobs:** add jobs by hand: title, company, location, apply link, and the full ad text. Only use sources we're allowed to use.
+- **Admin → applicant → AI matching** (only shown when the applicant gave `ai_processing` consent):
+  1. **Analyze CV** reads the PDF/DOCX from the private bucket and stores a structured profile in `cv_profiles`. Personal identifiers are not extracted.
+  2. **Match against active jobs** gives one score per job (0–100) with a verdict, strengths, gaps and advice, and stores them in `matches`.
+  3. **Tailor CV** drafts a tailored CV and cover letter that keep the original facts, plus a list of what changed and warnings. A human must review it before sending. **Download (Word)** builds an ATS-friendly DOCX in the browser.
+  4. **Email draft** writes a plain-text email in the applicant's language from the approved matches. For now, send it manually with the CVs attached.
+- Edge Function `supabase/functions/ai-admin` (admin JWT required; uses `ANTHROPIC_API_KEY`). Name, email and phone are never sent to the model.

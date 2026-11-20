@@ -11,6 +11,7 @@ import {
 } from '../../content/options'
 import { ADMIN_STRINGS, type AdminDict } from './adminStrings'
 import { downloadCsv } from './csv'
+import { AiPanel, Jobs } from './AiAdmin'
 
 export type Applicant = {
   id: string; created_at: string; updated_at: string; status: Status; language: Lang
@@ -124,7 +125,7 @@ function Login() {
 // ─────────────────────────────── Dashboard ───────────────────────────────
 function Dashboard() {
   const { a } = useAdminT()
-  const [tab, setTab] = useState<'applicants' | 'orders' | 'deletions' | 'stats'>('applicants')
+  const [tab, setTab] = useState<'applicants' | 'jobs' | 'orders' | 'deletions' | 'stats'>('applicants')
   const [rows, setRows] = useState<Applicant[] | null>(null)
   const [err, setErr] = useState<string | null>(null)
 
@@ -139,7 +140,7 @@ function Dashboard() {
   return (
     <>
       <div role="tablist" className="flex gap-1 overflow-x-auto border-b border-line">
-        {(['applicants', 'orders', 'deletions', 'stats'] as const).map((k) => (
+        {(['applicants', 'jobs', 'orders', 'deletions', 'stats'] as const).map((k) => (
           <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)}
             className={`whitespace-nowrap px-4 py-2.5 text-sm font-semibold border-b-2 -mb-px ${tab === k ? 'border-brand-700 text-brand-800' : 'border-transparent text-muted hover:text-ink'}`}>
             {a.tabs[k]}
@@ -149,6 +150,7 @@ function Dashboard() {
       {err && <div className="mt-4"><Alert tone="danger">{err}</Alert></div>}
       <div className="mt-5">
         {tab === 'applicants' && <Applicants rows={rows} reload={load} setRows={setRows} />}
+        {tab === 'jobs' && <Jobs />}
         {tab === 'orders' && <Orders applicants={rows ?? []} />}
         {tab === 'deletions' && <Deletions reload={load} applicants={rows ?? []} />}
         {tab === 'stats' && <Stats rows={rows ?? []} />}
@@ -343,6 +345,8 @@ function Detail({ applicant: r, onClose, onChange }: { applicant: Applicant; onC
             </button>
             {msg && <p className="w-full text-sm text-muted" role="status">{msg}</p>}
           </div>
+
+          <AiPanel applicant={r} hasAiConsent={consents.some((c) => c.consent_key === 'ai_processing' && c.granted)} />
 
           <section className="card p-4">
             <h3 className="mb-1 font-bold">{a.contact}</h3>
